@@ -41,6 +41,12 @@ export default function IncidentDetail() {
               No frame image (the backend returns imageUrl)
             </div>
           )}
+          {a.videoUrl && (
+            <>
+              <h2 className="mb-2 mt-5 font-semibold">Recorded clip</h2>
+              <video src={a.videoUrl} controls muted playsInline preload="metadata" className="aspect-video w-full rounded-md bg-slate-800" />
+            </>
+          )}
           <h2 className="mb-2 mt-5 font-semibold">Map</h2>
           <Map center={[a.lat, a.lng]} accident={{ lat: a.lat, lng: a.lng, label: a.locationName }} resources={a.nearbyResources} />
           <p className="mt-2 text-xs text-slate-500">Red: accident · Green: hospital · Blue: police · Amber: fire station</p>
@@ -61,7 +67,7 @@ export default function IncidentDetail() {
 
           <section className="card">
             <h2 className="mb-1 font-semibold">Nearest registered services</h2>
-            <p className="mb-3 text-xs text-slate-500">Tick the ones to alert, or alert all three.</p>
+            <p className="mb-3 text-xs text-slate-500">Tick the ones to alert, or alert all nearby.</p>
             <ul className="space-y-2">
               {a.nearbyResources.map((r) => (
                 <li key={r.id}>
@@ -75,10 +81,10 @@ export default function IncidentDetail() {
               ))}
             </ul>
             <div className="mt-4 flex flex-wrap gap-2">
-              <button className="btn btn-danger" disabled={busy || picked.length === 0} onClick={() => run(() => sendAlert(a.id, picked), "SMS sent to selected services")}>
+              <button className="btn btn-danger" disabled={busy || picked.length === 0} onClick={() => run(() => sendAlert(a.id, picked), "Alert recorded for selected services (simulated SMS)")}>
                 Send SMS to selected
               </button>
-              <button className="btn btn-ghost" disabled={busy} onClick={() => run(() => sendAlert(a.id), "SMS sent to all nearby services")}>Alert all nearby</button>
+              <button className="btn btn-ghost" disabled={busy} onClick={() => run(() => sendAlert(a.id), "Alert recorded for all nearby services (simulated SMS)")}>Alert all nearby</button>
               <button className="btn btn-ghost" disabled={busy || a.status === "Resolved"} onClick={() => run(() => setStatus(a.id, "Resolved"), "Marked as resolved")}>Mark resolved</button>
             </div>
           </section>
