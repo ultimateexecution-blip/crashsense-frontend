@@ -34,6 +34,7 @@ export interface Accident {
   status: Status;
   vehicles: number;
   imageUrl?: string;
+  videoUrl?: string | null;
   nearbyResources: NearbyResource[];
   sms: SmsRecord[];
 }
